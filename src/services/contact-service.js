@@ -137,13 +137,9 @@ function sort(arr) {
   })
 }
 
-function getContacts(filterBy = null) {
+function getContacts() {
   return new Promise((resolve, reject) => {
     var contactsToReturn =JSON.parse(JSON.stringify(contacts)) 
-    // if (filterBy && filterBy.term) {
-    //   contactsToReturn = filter(filterBy.term)
-    // }
-    // resolve(sort(contactsToReturn))
     resolve(contactsToReturn)
   })
 }
