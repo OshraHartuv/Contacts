@@ -15,12 +15,14 @@ import { useRouter, useRoute } from "vue-router";
 import { contactService } from "@/services/contact-service.js";
 import { utilService } from "@/services/util-service.js";
 import { computed } from "@vue/reactivity";
+import { useContactStore } from "../store/contact";
+
 
 export default {
   async setup() {
     const route = useRoute();
     const router = useRouter();
-
+    const contactStore = useContactStore();
     const { id } = route.params;
     const contact = reactive(
       id
@@ -39,7 +41,7 @@ export default {
     async function saveContact(ev) {
       ev.preventDefault();
       try {
-        await contactService.saveContact(contact);
+        await contactStore.saveContact(contact);
         router.push({ name: "Contact" });
       } catch (err) {
         console.error(`Error while saving contact => ${err.message}`);
