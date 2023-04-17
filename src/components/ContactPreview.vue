@@ -4,10 +4,12 @@
       <span class="underline">{{ getKeyForDisplay(key) }}:</span>
       {{ contact[key] }}
     </div>
-    <button>
-      <RouterLink :to="'/edit/'+contact._id">Edit</RouterLink>
-    </button>
-    <button @click="deleteContact(contact._id)">Delete</button>
+    <div>
+      <RouterLink :to="'/edit/'+contact._id">
+        <button>Edit</button>
+      </RouterLink>
+      <button @click="deleteContact(contact._id)">Delete</button>
+    </div>
   </section>
 </template>
 
@@ -19,7 +21,8 @@ export default {
   props: {
     contact: Object
   },
-  setup(props) {
+  emits: ["deleteContact"],
+  setup(props, ctx) {
     const contact = props.contact;
 
     const getKeys = computed(() => {
@@ -29,20 +32,15 @@ export default {
     function getKeyForDisplay(key) {
       return utilService.formatString(key);
     }
-    async function deleteContact(id) {
-      try {
-        await contactService.deleteContact(id);
-        const idx = contacts.findIndex(c => c._id === id);
-        if (idx !== -1) contacts.splice(idx, 1);
-        else throw new Error("No matching idx");
-      } catch (err) {
-        console.error(`Error while deleting contact => ${err.message}`);
-      }
+
+    function deleteContact(id) {
+      ctx.emit("deleteContact", id);
     }
+
     return {
-      deleteContact,
       getKeys,
-      getKeyForDisplay
+      getKeyForDisplay,
+      deleteContact,
     };
   }
 };

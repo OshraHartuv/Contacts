@@ -1,7 +1,7 @@
 <template>
   <div class="contact-list">
     <div v-for="contact in contacts" :key="contact._id">
-      <ContactPreview :contact="contact" />
+      <ContactPreview :contact="contact" @deleteContact="deleteContact" />
     </div>
   </div>
 </template>
@@ -13,6 +13,14 @@ export default {
   props: {
     contacts: Array
   },
+  emits: ["deleteContact"],
+  setup(props, ctx) {
+    function deleteContact(id) {
+      ctx.emit("deleteContact", id);
+    }
+
+    return { deleteContact };
+  },
   components: { ContactPreview }
 };
 </script>
@@ -23,5 +31,4 @@ export default {
   flex-wrap: wrap;
   gap: 10px;
 }
-
 </style>

@@ -2,7 +2,7 @@
   <div class="contact-app">
     <RouterLink to="/edit">Create contact</RouterLink>
     <ContactFilter @setFilter="setFilter" />
-    <ContactList :contacts="contactsForDisplay" />
+    <ContactList :contacts="contactsForDisplay"  @deleteContact="deleteContact" />
   </div>
 </template>
 
@@ -38,9 +38,21 @@ export default {
       filterBy.value = filter;
     }
 
+    async function deleteContact(id) {
+      try {
+        await contactService.deleteContact(id);
+        const idx = contacts.findIndex(c => c._id === id);
+        if (idx !== -1) contacts.splice(idx, 1);
+        else throw new Error("No matching idx");
+      } catch (err) {
+        console.error(`Error while deleting contact => ${err.message}`);
+      }
+    }
+
     return {
       setFilter,
-      contactsForDisplay
+      contactsForDisplay,
+      deleteContact
     };
   },
   components: { ContactFilter, ContactList }

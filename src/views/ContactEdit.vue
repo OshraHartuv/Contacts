@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { contactService } from "@/services/contact-service.js";
 import { utilService } from "@/services/util-service.js";
